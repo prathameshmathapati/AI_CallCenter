@@ -1,0 +1,44 @@
+[
+  {
+    "id": "premium",
+    "en": {
+      "name": "Premium Plan",
+      "price": "$99/month",
+      "features": "Unlimited calls, 24/7 support, Advanced analytics",
+      "description": "Our most popular plan for growing businesses"
+    },
+    "hi": {
+      "name": "प्रीमियम प्लान",
+      "price": "$99/महीना",
+      "features": "असीमित कॉल, 24/7 सपोर्ट, उन्नत एनालिटिक्स",
+      "description": "बढ़ते व्यवसायों के लिए हमारी सबसे लोकप्रिय योजना"
+    },
+    "es": {
+      "name": "Plan Premium",
+      "price": "$99/mes",
+      "features": "Llamadas ilimitadas, soporte 24/7, análisis avanzados",
+      "description": "Nuestro plan más popular para empresas en crecimiento"
+    }
+  },
+  {
+    "id": "basic",
+    "en": {
+      "name": "Basic Plan",
+      "price": "$29/month",
+      "features": "100 calls/month, Email support",
+      "description": "Perfect for small teams just getting started"
+    },
+    "hi": {
+      "name": "बेसिक प्लान",
+      "price": "$29/महीना",
+      "features": "100 कॉल/महीना, ईमेल सपोर्ट",
+      "description": "छोटी टीमों के लिए एकदम सही"
+    },
+    "es": {
+      "name": "Plan Básico",
+      "price": "$29/mes",
+      "features": "100 llamadas/mes, soporte por correo",
+      "description": "Perfecto para equipos pequeños que recién comienzan"
+    }
+  }
+]

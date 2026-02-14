@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Call Center - Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-radius: 16px;
+            border: 1px solid #e94560;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .header p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Server Status */
+        .server-status {
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .server-online {
+            background: #1a4731;
+            color: #4ecca3;
+            border: 1px solid #4ecca3;
+        }
+
+        .server-offline {
+            background: #4a1a1a;
+            color: #e94560;
+            border: 1px solid #e94560;
+        }
+
+        /* Call Controls */
+        .call-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-call {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+
+        .btn-call:hover:not(:disabled) {
+            background: #3ab88a;
+        }
+
+        .btn-hangup {
+            background: #e94560;
+            color: #fff;
+        }
+
+        .btn-hangup:hover:not(:disabled) {
+            background: #c73652;
+        }
+
+        /* Status Box */
+        .status-box {
+            padding: 14px 20px;
+            background: #16213e;
+            border-radius: 10px;
+            border: 1px solid #0f3460;
+            text-align: center;
+            font-size: 15px;
+            color: #aaa;
+        }
+
+        .status-box .label {
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .status-active {
+            border-color: #4ecca3 !important;
+        }
+
+        .status-active .status-text {
+            color: #4ecca3;
+        }
+
+        /* Input Section */
+        .input-section {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 15px;
+            border: 2px solid #0f3460;
+            border-radius: 10px;
+            background: #16213e;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-section input:focus {
+            border-color: #4ecca3;
+        }
+
+        .input-section input:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .input-section input::placeholder {
+            color: #555;
+        }
+
+        .btn-send {
+            background: #0f3460;
+            color: #4ecca3;
+            padding: 14px 24px;
+            border-radius: 10px;
+        }
+
+        .btn-send:hover:not(:disabled) {
+            background: #1a4a7a;
+        }
+
+        /* Conversation Box */
+        .conversation {
+            flex: 1;
+            background: #16213e;
+            border-radius: 16px;
+            border: 1px solid #0f3460;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .conversation-header {
+            padding: 14px 20px;
+            background: #0f3460;
+            font-size: 13px;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .messages {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 85%;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-user {
+            background: #0f3460;
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-ai {
+            background: #1a3a2a;
+            color: #4ecca3;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-system {
+            background: #2a2a1a;
+            color: #e9a456;
+            align-self: center;
+            font-style: italic;
+            font-size: 13px;
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .message .sender {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+
+        .message-user .sender { color: #4ecca3; }
+        .message-ai .sender { color: #4ecca3; }
+
+        /* Typing Indicator */
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 10px 16px;
+            align-self: flex-start;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #4ecca3;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            color: #444;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        .empty-state .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🤖 AI Call Center</h1>
+            <p>Powered by Google Gemini | Browser Test Interface</p>
+        </div>
+
+        <!-- Server Status -->
+        <div id="server-status" class="server-status server-offline">
+            ⏳ Checking server connection...
+        </div>
+
+        <!-- Call Buttons -->
+        <div class="call-controls">
+            <button class="btn btn-call" id="call-btn" onclick="startCall()" disabled>
+                📞 Start Call
+            </button>
+            <button class="btn btn-hangup" id="hangup-btn" onclick="hangupCall()" disabled>
+                📴 Hang Up
+            </button>
+        </div>
+
+        <!-- Status -->
+        <div class="status-box" id="status-box">
+            <div class="label">Call Status</div>
+            <div class="status-text" id="status-text">Ready to call</div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-section">
+            <input type="text" id="user-input" placeholder="Type your message here..." disabled>
+            <button class="btn btn-send" id="send-btn" onclick="sendMessage()" disabled>Send</button>
+        </div>
+
+        <!-- Conversation -->
+        <div class="conversation">
+            <div class="conversation-header">
+                <span>📝 Conversation</span>
+                <span id="msg-count">0 messages</span>
+            </div>
+            <div class="messages" id="messages">
+                <div class="empty-state">
+                    <div class="icon">📞</div>
+                    Click "Start Call" to begin a conversation
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let callActive = false;
+        let messageCount = 0;
+        const SERVER_URL = 'http://localhost:3000';
+        const CALL_SID = 'BROWSER-TEST-' + Date.now();
+
+        // Check server on load
+        window.onload = function () {
+            checkServer();
+            // Recheck every 5 seconds
+            setInterval(checkServer, 5000);
+        };
+
+        // Check if Python server is running
+        function checkServer() {
+            fetch(`${SERVER_URL}/test`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('server-status').className = 'server-status server-online';
+                    document.getElementById('server-status').innerText = `✅ Server Online | LLM: ${data.llm_provider.toUpperCase()}`;
+                    if (!callActive) document.getElementById('call-btn').disabled = false;
+                })
+                .catch(() => {
+                    document.getElementById('server-status').className = 'server-status server-offline';
+                    document.getElementById('server-status').innerText = '❌ Server Offline — Run "python app.py" first';
+                    document.getElementById('call-btn').disabled = true;
+                });
+        }
+
+        // Start a call
+        function startCall() {
+            callActive = true;
+            messageCount = 0;
+
+            // Update UI
+            document.getElementById('call-btn').disabled = true;
+            document.getElementById('hangup-btn').disabled = false;
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            document.getElementById('status-box').className = 'status-box status-active';
+            document.getElementById('status-text').innerText = '☎️ Connecting...';
+            document.getElementById('messages').innerHTML = '';
+
+            // Hit /answer on your server
+            fetch(`${SERVER_URL}/answer`, { method: 'POST' })
+                .then(res => res.text())
+                .then(twiml => {
+                    const texts = parseTwiML(twiml);
+                    if (texts.length > 0) {
+                        addMessage('ai', texts.join(' '));
+                    }
+                    document.getElementById('status-text').innerText = '☎️ Call Active — Type your message';
+                    document.getElementById('user-input').focus();
+                })
+                .catch(err => {
+                    console.error(err);
+                    addMessage('system', 'Failed to connect to server. Is Python running?');
+                    hangupCall();
+                });
+        }
+
+        // End the call
+        function hangupCall() {
+            callActive = false;
+            document.getElementById('call-btn').disabled = false;
+            document.getElementById('hangup-btn').disabled = true;
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('send-btn').disabled = true;
+            document.getElementById('status-box').className = 'status-box';
+            document.getElementById('status-text').innerText = 'Call ended';
+            addMessage('system', '📴 Call has ended. Click "Start Call" to begin again.');
+        }
+
+        // Send a message
+        function sendMessage() {
+            if (!callActive) return;
+
+            const input = document.getElementById('user-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            // Show user message
+            addMessage('user', msg);
+            input.value = '';
+            input.disabled = true;
+            document.getElementById('send-btn').disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            // Send to server
+            fetch(`${SERVER_URL}/process-speech`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    SpeechResult: msg,
+                    CallSid: CALL_SID,
+                    Confidence: '0.95'
+                })
+            })
+            .then(res => res.text())
+            .then(twiml => {
+                removeTyping();
+
+                const texts = parseTwiML(twiml);
+                if (texts.length > 0) {
+                    addMessage('ai', texts.join(' '));
+                }
+
+                // Check if call should end (Hangup tag present)
+                if (twiml.includes('<Hangup/>') || twiml.includes('<Hangup />')) {
+                    setTimeout(() => hangupCall(), 1500);
+                } else {
+                    // Re-enable input
+                    input.disabled = false;
+                    document.getElementById('send-btn').disabled = false;
+                    input.focus();
+                }
+            })
+            .catch(err => {
+                removeTyping();
+                console.error(err);
+                addMessage('system', '⚠️ Error sending message. Check if server is running.');
+                input.disabled = false;
+                document.getElementById('send-btn').disabled = false;
+            });
+        }
+
+        // Parse TwiML XML and extract all <Say> text
+        function parseTwiML(twiml) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(twiml, 'text/xml');
+            const says = doc.getElementsByTagName('Say');
+            const texts = [];
+            for (let i = 0; i < says.length; i++) {
+                const t = says[i].textContent.trim();
+                if (t) texts.push(t);
+            }
+            return texts;
+        }
+
+        // Add a message to the conversation
+        function addMessage(type, text) {
+            const container = document.getElementById('messages');
+
+            // Remove empty state
+            const empty = container.querySelector('.empty-state');
+            if (empty) empty.remove();
+
+            const div = document.createElement('div');
+            div.className = `message message-${type}`;
+
+            let senderLabel = '';
+            if (type === 'user') senderLabel = '<div class="sender">You</div>';
+            else if (type === 'ai') senderLabel = '<div class="sender">🤖 AI Assistant</div>';
+
+            div.innerHTML = senderLabel + text;
+            container.appendChild(div);
+
+            // Update message count
+            if (type === 'user' || type === 'ai') {
+                messageCount++;
+                document.getElementById('msg-count').innerText = messageCount + ' messages';
+            }
+
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Show typing dots
+        function showTyping() {
+            const container = document.getElementById('messages');
+            const div = document.createElement('div');
+            div.className = 'typing';
+            div.id = 'typing-indicator';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Remove typing dots
+        function removeTyping() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        // Enter key sends message
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "hours",
+    "en": {
+      "question": "What are your business hours?",
+      "answer": "We're open Monday to Friday, 9 AM to 6 PM EST. I'm available 24/7 to help you!"
+    },
+    "hi": {
+      "question": "आपके व्यावसायिक घंटे क्या हैं?",
+      "answer": "हम सोमवार से शुक्रवार, सुबह 9 बजे से शाम 6 बजे तक खुले हैं। मैं आपकी मदद के लिए 24/7 उपलब्ध हूं!"
+    },
+    "es": {
+      "question": "¿Cuáles son sus horarios de atención?",
+      "answer": "Estamos abiertos de lunes a viernes, de 9 AM a 6 PM EST. ¡Estoy disponible 24/7 para ayudarte!"
+    }
+  },
+  {
+    "id": "track_order",
+    "en": {
+      "question": "How do I track my order?",
+      "answer": "Just give me your order number and I'll look it up for you right away."
+    },
+    "hi": {
+      "question": "मैं अपने ऑर्डर को कैसे ट्रैक करूं?",
+      "answer": "बस मुझे अपना ऑर्डर नंबर दें और मैं तुरंत इसे देख लूंगा।"
+    },
+    "es": {
+      "question": "¿Cómo rastreo mi pedido?",
+      "answer": "Solo dame tu número de pedido y lo buscaré de inmediato."
+    }
+  },
+  {
+    "id": "return_policy",
+    "en": {
+      "question": "What's your return policy?",
+      "answer": "We offer a 30-day money-back guarantee. Just contact us and we'll process your return within 24 hours."
+    },
+    "hi": {
+      "question": "आपकी रिटर्न पॉलिसी क्या है?",
+      "answer": "हम 30 दिन की मनी-बैक गारंटी प्रदान करते हैं। बस हमसे संपर्क करें और हम 24 घंटे के भीतर आपका रिटर्न प्रोसेस कर देंगे।"
+    },
+    "es": {
+      "question": "¿Cuál es su política de devolución?",
+      "answer": "Ofrecemos una garantía de devolución de dinero de 30 días. Solo contáctenos y procesaremos su devolución en 24 horas."
+    }
+  }
+]

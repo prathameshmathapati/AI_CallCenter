@@ -1,0 +1,10 @@
+[
+  {
+    "order_id": "ORD-12345",
+    "customer_phone": "+1234567890",
+    "status": "Shipped",
+    "tracking": "TRK-ABC123",
+    "estimated_delivery": "2026-02-10",
+    "items": "Premium Plan - Annual Subscription"
+  }
+]

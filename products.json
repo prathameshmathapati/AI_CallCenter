@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Premium Plan",
+    "price": "$99/month",
+    "features": "Unlimited calls, 24/7 support, Advanced analytics, Priority routing",
+    "description": "Our most popular plan for growing businesses"
+  },
+  {
+    "id": 2,
+    "name": "Basic Plan",
+    "price": "$29/month",
+    "features": "100 calls per month, Email support, Basic analytics",
+    "description": "Perfect for small teams just getting started"
+  }
+]

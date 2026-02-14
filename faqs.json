@@ -1,0 +1,17 @@
+[
+  {
+    "question": "What are your business hours?",
+    "answer": "We're open Monday to Friday, 9 AM to 6 PM EST. However, I'm available 24/7 to help you!",
+    "category": "general"
+  },
+  {
+    "question": "How do I track my order?",
+    "answer": "I can help you track your order right now. Just give me your order number, and I'll look it up for you.",
+    "category": "orders"
+  },
+  {
+    "question": "What's your return policy?",
+    "answer": "We offer a 30-day money-back guarantee. If you're not satisfied, just contact us and we'll process your return within 24 hours.",
+    "category": "policy"
+  }
+]
