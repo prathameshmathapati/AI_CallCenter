@@ -1,0 +1,63 @@
+{
+  "caller": "+18018673815",
+  "messages": [
+    {
+      "role": "customer",
+      "text": "What are your business hours?",
+      "timestamp": "2026-02-20T22:33:53.689502"
+    },
+    {
+      "role": "ai",
+      "text": "We're open Monday to Friday, 9 AM to 6 PM EST, but I'm available 24/7 to help you.",
+      "timestamp": "2026-02-20T22:33:54.133776"
+    },
+    {
+      "role": "customer",
+      "text": "Tell me about your plans.",
+      "timestamp": "2026-02-20T22:34:07.310255"
+    },
+    {
+      "role": "ai",
+      "text": "I don't have that information, could you please specify what type of plans you're referring to?",
+      "timestamp": "2026-02-20T22:34:07.637575"
+    },
+    {
+      "role": "customer",
+      "text": "I'm frustrated.",
+      "timestamp": "2026-02-20T22:34:20.911255"
+    },
+    {
+      "role": "ai",
+      "text": "I'm so sorry to hear that, can you tell me a little bit more about what's going on so I can try to help?",
+      "timestamp": "2026-02-20T22:34:21.151875"
+    },
+    {
+      "role": "customer",
+      "text": "Can you give me tracking info on my order number? 1 2 3 4 5",
+      "timestamp": "2026-02-20T22:34:40.453152"
+    },
+    {
+      "role": "ai",
+      "text": "Let me look that up for you, can you please confirm your order number is 12345?",
+      "timestamp": "2026-02-20T22:34:40.651068"
+    },
+    {
+      "role": "customer",
+      "text": "Yes.",
+      "timestamp": "2026-02-20T22:34:51.382183"
+    },
+    {
+      "role": "ai",
+      "text": "I'm not able to find any information on an order with that number, can you please provide more details?",
+      "timestamp": "2026-02-20T22:34:51.586843"
+    },
+    {
+      "role": "customer",
+      "text": "Oh no. Goodbye",
+      "timestamp": "2026-02-20T22:35:04.825223"
+    }
+  ],
+  "language": "en",
+  "start_time": "2026-02-20T22:33:42.110439",
+  "end_time": "2026-02-20T22:35:04.825266"
+}

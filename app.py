@@ -392,6 +392,25 @@ def process_speech_timeout():
 
 
 # ============================================================
+# ROUTE: Call status tracking (REQUIRED by Twilio)
+# ============================================================
+@app.route("/call-status", methods=['POST', 'GET'])
+def call_status():
+    """Handle call status updates from Twilio"""
+    call_sid = request.values.get('CallSid', 'Unknown')
+    call_status = request.values.get('CallStatus', 'Unknown')
+    
+    print(f"\n📊 CALL STATUS UPDATE")
+    print(f"Call ID: {call_sid}")
+    print(f"Status: {call_status}")
+    
+    if call_status == 'completed' and call_sid in conversations:
+        save_conversation(call_sid)
+    
+    return '', 200
+
+
+# ============================================================
 # FUNCTION: Save conversation
 # ============================================================
 def save_conversation(call_sid):

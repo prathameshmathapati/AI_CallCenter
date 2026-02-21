@@ -1,0 +1,63 @@
+{
+  "caller": "+18018673815",
+  "messages": [
+    {
+      "role": "customer",
+      "text": "Hey Sarah, what are your business hours?",
+      "timestamp": "2026-02-20T22:42:41.933229"
+    },
+    {
+      "role": "ai",
+      "text": "Our business hours are Monday to Friday, 9 AM to 6 PM EST, but don't worry, I'm here to help you 24/7.",
+      "timestamp": "2026-02-20T22:42:42.183703"
+    },
+    {
+      "role": "customer",
+      "text": "Yes, tell me about your plans.",
+      "timestamp": "2026-02-20T22:42:56.903904"
+    },
+    {
+      "role": "ai",
+      "text": "I'd be happy to help with any questions you have, but I didn't catch what specific plans you're referring to - could you please provide more context?",
+      "timestamp": "2026-02-20T22:42:57.154990"
+    },
+    {
+      "role": "customer",
+      "text": "I'm frustrated.",
+      "timestamp": "2026-02-20T22:43:08.584402"
+    },
+    {
+      "role": "ai",
+      "text": "I'm so sorry to hear that, can you tell me a bit more about what's bothering you so I can try to help?",
+      "timestamp": "2026-02-20T22:43:08.771075"
+    },
+    {
+      "role": "customer",
+      "text": "Can you can you help me with my order number and tracking info on it?",
+      "timestamp": "2026-02-20T22:43:23.267489"
+    },
+    {
+      "role": "ai",
+      "text": "Just give me your order number and I'll look it up for you right away.",
+      "timestamp": "2026-02-20T22:43:23.423976"
+    },
+    {
+      "role": "customer",
+      "text": "Order number is 1.",
+      "timestamp": "2026-02-20T22:43:32.026753"
+    },
+    {
+      "role": "ai",
+      "text": "Let me check on that for you - I've located your order number 1, can you please hold for just a moment while I look up the tracking info?",
+      "timestamp": "2026-02-20T22:43:32.243068"
+    },
+    {
+      "role": "customer",
+      "text": "No goodbyes.",
+      "timestamp": "2026-02-20T22:43:48.888450"
+    }
+  ],
+  "language": "en",
+  "start_time": "2026-02-20T22:42:27.214311",
+  "end_time": "2026-02-20T22:43:48.888494"
+}

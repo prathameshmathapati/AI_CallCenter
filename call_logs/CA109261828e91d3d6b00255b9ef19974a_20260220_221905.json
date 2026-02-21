@@ -1,0 +1,73 @@
+{
+  "caller": "+18018673815",
+  "messages": [
+    {
+      "role": "customer",
+      "text": "What are your business hours?",
+      "timestamp": "2026-02-20T22:17:29.967149"
+    },
+    {
+      "role": "ai",
+      "text": "We're open Monday to Friday, 9 AM to 6 PM EST, but I'm available 24/7 to help you.",
+      "timestamp": "2026-02-20T22:17:30.333862"
+    },
+    {
+      "role": "customer",
+      "text": "Tell me about your plans.",
+      "timestamp": "2026-02-20T22:17:47.040801"
+    },
+    {
+      "role": "ai",
+      "text": "I don't have any information about plans, could you please specify what you're referring to so I can better assist you?",
+      "timestamp": "2026-02-20T22:17:47.251755"
+    },
+    {
+      "role": "customer",
+      "text": "I'm frustrated.",
+      "timestamp": "2026-02-20T22:17:59.295533"
+    },
+    {
+      "role": "ai",
+      "text": "I'm so sorry to hear that, can you tell me a bit more about what's causing your frustration so I can try to help?",
+      "timestamp": "2026-02-20T22:17:59.478758"
+    },
+    {
+      "role": "customer",
+      "text": "Could you help me with my tracking number?",
+      "timestamp": "2026-02-20T22:18:13.035708"
+    },
+    {
+      "role": "ai",
+      "text": "I'd be happy to help, but I don't have any information about tracking numbers, let me see if I can assist you with something else, like returns maybe?",
+      "timestamp": "2026-02-20T22:18:13.292205"
+    },
+    {
+      "role": "customer",
+      "text": "My tracking number. My tracking number is order o r d. 1 2 3 4 5.",
+      "timestamp": "2026-02-20T22:18:34.366096"
+    },
+    {
+      "role": "ai",
+      "text": "Let me look up your order with the number \"ord 12345\" right away.",
+      "timestamp": "2026-02-20T22:18:34.565381"
+    },
+    {
+      "role": "customer",
+      "text": "Give me tracking info on o. R d, 1 2 3 4 5.",
+      "timestamp": "2026-02-20T22:18:50.952348"
+    },
+    {
+      "role": "ai",
+      "text": "I've got your order, let me just check the status of \"ord 12345\" for you.",
+      "timestamp": "2026-02-20T22:18:51.175847"
+    },
+    {
+      "role": "customer",
+      "text": "No goodbyes.",
+      "timestamp": "2026-02-20T22:19:05.079024"
+    }
+  ],
+  "language": "en",
+  "start_time": "2026-02-20T22:17:14.967401",
+  "end_time": "2026-02-20T22:19:05.079067"
+}
