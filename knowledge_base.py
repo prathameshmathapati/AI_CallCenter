@@ -1,5 +1,7 @@
 import json
 import os
+import threading
+from functools import lru_cache
 
 class MultilingualKnowledgeBase:
     def __init__(self):
@@ -20,10 +22,17 @@ class MultilingualKnowledgeBase:
             'de': 'German',
             'pt': 'Portuguese'
         }
+
+        # RLock allows the same thread to re-acquire (safer than Lock)
+        self._lock = threading.RLock()
         
         # Load data
         self.load_knowledge_base()
     
+    # ============================================================
+    # LANGUAGE DETECTION  - result cached per unique text input
+    # ============================================================
+    @lru_cache(maxsize=512)
     def detect_language(self, text):
         """Detect language of text"""
         try:
@@ -57,58 +66,48 @@ class MultilingualKnowledgeBase:
             print(f"⚠️ Could not detect language: {e}, defaulting to English")
             return 'en'
     
+    # ============================================================
+    # LOAD  - reads files once at startup, DRY helper
+    # ============================================================
     def load_knowledge_base(self):
         """Load multilingual knowledge base"""
-        
-        # Load multilingual FAQs
-        if os.path.exists('faqs_multilingual.json'):
-            try:
-                with open('faqs_multilingual.json', 'r', encoding='utf-8') as f:
-                    self.faqs = json.load(f)
-                print(f"✅ Loaded {len(self.faqs)} multilingual FAQs")
-            except Exception as e:
-                print(f"⚠️ Could not load faqs_multilingual.json: {e}")
-                self.faqs = []
-        else:
-            print(f"❌ WARNING: faqs_multilingual.json NOT FOUND")
-            print(f"   Current directory: {os.getcwd()}")
-            print(f"   Files in directory: {os.listdir('.')}")
-            self.faqs = []
-        
-        # Load multilingual Products
-        if os.path.exists('products_multilingual.json'):
-            try:
-                with open('products_multilingual.json', 'r', encoding='utf-8') as f:
-                    self.products = json.load(f)
-                print(f"✅ Loaded {len(self.products)} multilingual products")
-            except Exception as e:
-                print(f"⚠️ Could not load products_multilingual.json: {e}")
-                self.products = []
-        else:
-            print(f"❌ WARNING: products_multilingual.json NOT FOUND")
-            print(f"   Current directory: {os.getcwd()}")
-            print(f"   Files in directory: {os.listdir('.')}")
-            self.products = []
-        
-        # Load orders (language agnostic)
-        if os.path.exists('orders.json'):
-            try:
-                with open('orders.json', 'r', encoding='utf-8') as f:
-                    self.orders = json.load(f)
-                print(f"✅ Loaded {len(self.orders)} orders")
-            except Exception as e:
-                print(f"⚠️ Could not load orders.json: {e}")
-                self.orders = []
-        else:
-            print(f"⚠️ orders.json not found - order lookup will not work")
-            self.orders = []
-    
+
+        def _load(filename, label, warn_missing=True):
+            if os.path.exists(filename):
+                try:
+                    with open(filename, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    print(f"✅ Loaded {len(data)} {label}")
+                    return data
+                except Exception as e:
+                    print(f"⚠️ Could not load {filename}: {e}")
+                    return []
+            else:
+                if warn_missing:
+                    print(f"❌ WARNING: {filename} NOT FOUND")
+                    print(f"   Current directory: {os.getcwd()}")
+                    print(f"   Files in directory: {os.listdir('.')}")
+                else:
+                    print(f"⚠️ {filename} not found - order lookup will not work")
+                return []
+
+        self.faqs     = _load('faqs_multilingual.json',     'multilingual FAQs')
+        self.products = _load('products_multilingual.json', 'multilingual products')
+        self.orders   = _load('orders.json',                'orders', warn_missing=False)
+
+    # ============================================================
+    # FAQ SEARCH  - cached per (query, language) pair
+    # ============================================================
+    @lru_cache(maxsize=256)
     def search_faqs(self, query, language='en'):
         """Search FAQs in specific language"""
         query_lower = query.lower()
         results = []
+
+        with self._lock:
+            faqs_snapshot = list(self.faqs)
         
-        for faq in self.faqs:
+        for faq in faqs_snapshot:
             # Get text in requested language, fallback to English
             faq_data = faq.get(language, faq.get('en', {}))
             
@@ -140,12 +139,19 @@ class MultilingualKnowledgeBase:
         results.sort(key=lambda x: x['relevance'], reverse=True)
         return [r['faq'] for r in results[:3]]
     
+    # ============================================================
+    # PRODUCT SEARCH  - cached per (query, language) pair
+    # ============================================================
+    @lru_cache(maxsize=256)
     def search_products(self, query, language='en'):
         """Search products in specific language"""
         query_lower = query.lower()
         results = []
+
+        with self._lock:
+            products_snapshot = list(self.products)
         
-        for product in self.products:
+        for product in products_snapshot:
             # Get product in requested language
             prod_data = product.get(language, product.get('en', {}))
             
@@ -177,15 +183,25 @@ class MultilingualKnowledgeBase:
         results.sort(key=lambda x: x['relevance'], reverse=True)
         return [r['product'] for r in results[:3]]
     
+    # ============================================================
+    # ORDER SEARCH  - no cache (orders change in real-time)
+    # ============================================================
     def search_order(self, order_id=None, phone=None):
         """Search for order (language agnostic)"""
-        for order in self.orders:
+        with self._lock:
+            orders_snapshot = list(self.orders)
+
+        for order in orders_snapshot:
             if order_id and order['order_id'].upper() == order_id.upper():
                 return order
             if phone and order['customer_phone'] == phone:
                 return order
         return None
     
+    # ============================================================
+    # CONTEXT BUILDER  - cached per (query, language) pair
+    # ============================================================
+    @lru_cache(maxsize=256)
     def get_relevant_context(self, query, language='en'):
         """Get relevant context in specified language"""
         context_parts = []
@@ -234,6 +250,24 @@ class MultilingualKnowledgeBase:
             return "\n".join(context_parts)
         else:
             return "No specific information found in knowledge base. Use general customer service knowledge to help."
+
+    # ============================================================
+    # CACHE MANAGEMENT
+    # ============================================================
+    def clear_caches(self):
+        """Clear all LRU caches — call after data updates."""
+        self.detect_language.cache_clear()
+        self.search_faqs.cache_clear()
+        self.search_products.cache_clear()
+        self.get_relevant_context.cache_clear()
+        print("✅ All KB caches cleared.")
+
+    def reload(self):
+        """Hot-reload knowledge base files without restarting the server."""
+        with self._lock:
+            self.load_knowledge_base()
+        self.clear_caches()
+        print("✅ Knowledge base reloaded.")
 
 
 # Test the multilingual knowledge base
@@ -285,6 +319,17 @@ if __name__ == "__main__":
     print("=" * 60)
     context = kb.get_relevant_context("आपके व्यावसायिक घंटे क्या हैं?", 'hi')
     print(context)
+
+    print("\n" + "=" * 60)
+    print("TEST 7: Cache Hit (repeat query - should be instant)")
+    print("=" * 60)
+    context = kb.get_relevant_context("What plans do you offer?", 'en')
+    print(context)
+
+    print("\n" + "=" * 60)
+    print("TEST 8: Hot Reload")
+    print("=" * 60)
+    kb.reload()
     
     print("\n" + "=" * 60)
     print("TESTS COMPLETE")
